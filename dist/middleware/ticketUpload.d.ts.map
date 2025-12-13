@@ -1,0 +1,1 @@
+{"version":3,"file":"ticketUpload.d.ts","sourceRoot":"","sources":["../../src/middleware/ticketUpload.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,QAAQ,CAAC;AAG5B,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AAqB1D,eAAO,MAAM,YAAY,eAyBvB,CAAC;AAGH,eAAO,MAAM,sBAAsB,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,EAAE,MAAM,YAAY,uDA6C3F,CAAC"}
