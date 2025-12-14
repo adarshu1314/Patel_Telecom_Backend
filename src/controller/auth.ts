@@ -4,101 +4,127 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 
-export const loginUser = async (req: Request, res: Response) => {
-    try {
-        const { email, password } = req.body;
+export const loginCustomer = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-        // Validate input
-        if (!email || !password) {
-            return res.status(400).json({
-                success: false,
-                message: 'Email and password are required'
-            });
-        }
-
-        // Find user by email
-        const user = await prisma.user.findUnique({
-            where: { email },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                password: true,
-                role: true,
-                department: {
-                    select: {
-                        id: true,
-                        name: true
-                    }
-                }
-            }
-        });
-
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid credentials'
-            });
-        }
-
-        // Verify password using bcrypt
-        let isPasswordValid = false;
-        try {
-            isPasswordValid = await bcrypt.compare(password, user.password);
-        } catch (bcryptError) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid credentials'
-            });
-        }
-
-        if (!isPasswordValid) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid credentials'
-            });
-        }
-
-        // Generate JWT token
-        const jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
-        const token = jwt.sign(
-            {
-                userId: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                department: user.department
-            },
-            jwtSecret,
-            { expiresIn: '7d' } // Token expires in 7 days for security
-        );
-
-        // Return user info and token
-        const response = {
-            success: true,
-            message: 'Login successful',
-            token,
-            user: {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                department: user.department
-            }
-        };
-
-        res.json(response);
-
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(400).json({
-            success: false,
-            message: 'Invalid username or password'
-        });
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
     }
-}
 
+    const customer = await prisma.customer.findUnique({
+      where: { email },
+      select: {
+        customer_id: true,
+        username: true,
+        email: true,
+        password: true,
+      },
+    });
 
+    if (!customer || !(await bcrypt.compare(password, customer.password))) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+    // ✅ Prisma → DTO
+    const userDto: Request["user"] = {
+      userId: customer.customer_id,
+      email: customer.email,
+      name: customer.username,
+      role: "USER",
+    };
+
+    const token = jwt.sign(
+      userDto,
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: userDto,
+    });
+
+  } catch (error) {
+    console.error("Customer login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const loginAdmin = async (req: Request, res: Response) => {
+  try {
+    console.log("Request :"+req.body);
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+
+    const admin = await prisma.admin.findFirst({
+      where: { email },
+      select: {
+        admin_id: true,
+        username: true,
+        email: true,
+        password: true,
+        roles: true,
+      },
+    });
+    console.log(admin);
+    console.log(password); 
+    if (!admin || !(await bcrypt.compare(password, admin.password))) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+    // ✅ Determine role from roles array
+    const role: "ADMIN" | "SUPERADMIN" =
+      admin.roles.includes("SUPERADMIN") ? "SUPERADMIN" : "ADMIN";
+
+    const adminDto: Request["user"] = {
+      userId: admin.admin_id,
+      email: admin.email!,
+      name: admin.username,
+      role,
+    };
+
+    const token = jwt.sign(
+      adminDto,
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: adminDto,
+    });
+
+  } catch (error) {
+    console.error("Admin login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
 
 export const getProfile = async (req: Request, res: Response) => {
     try {

@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 export const validateToken = (req: Request, res: Response, next: NextFunction) => {
     try {
         const authHeader = req.headers.authorization;
-
+        console.log("Auth Header:", authHeader);
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({
                 success: false,
@@ -23,8 +23,7 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
                 userId: decoded.userId,
                 email: decoded.email,
                 name: decoded.name,
-                role: decoded.role,
-                department: decoded.department
+                role: decoded.role
             };
 
             next();

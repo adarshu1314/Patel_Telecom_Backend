@@ -3,14 +3,10 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
-import taskRoutes from "./routes/task";
-import clientRoutes from "./routes/client";
-import userRoutes from "./routes/user";
-import dashboardRoutes from "./routes/dashboard";
+import encryptRoutes from "./routes/encrypt";
 import { validateToken } from "./middleware/auth";
-import attendanceRoutes from "./routes/attendance";
-import comingSoonRoutes from "./routes/comingSoon";
-import bulkRoutes from "./routes/bulk";
+import productBulkRoutes from "./routes/productbulk";
+import cartRoutes from "./routes/cart";
 // Load environment variables
 dotenv?.config();
 
@@ -48,13 +44,10 @@ console.log('🚀 Backend initialization started - console logging test');
 
 // Auth routes
 app.use("/api/auth", authRoutes);
-app.use("/api/attendance", validateToken, attendanceRoutes);
-app.use("/api/user", validateToken, userRoutes);
-app.use("/api/client", validateToken, clientRoutes);
-app.use("/api/task", validateToken, taskRoutes);
-app.use("/api/dashboard", validateToken, dashboardRoutes);
-app.use("/api/coming-soon", validateToken, comingSoonRoutes);
-app.use("/api/bulk", validateToken, bulkRoutes);
+app.use("/api/encrypt", encryptRoutes);
+app.use("/api/productbulk",validateToken, productBulkRoutes);
+app.use("/api/cart",validateToken, cartRoutes);
+
 
 // Basic health check route
 app.get("/api/health", (req, res) => {
@@ -106,5 +99,5 @@ app.listen(EXPRESS_PORT, EXPRESS_HOST, () => {
   console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
   console.log(`💚 Health check available at: http://${EXPRESS_HOST}:${EXPRESS_PORT}/health`);
   console.log(`🔧 Error test available at: http://${EXPRESS_HOST}:${EXPRESS_PORT}/error-test`);
-  console.log(`📡 Task routes available at: http://${EXPRESS_HOST}:${EXPRESS_PORT}/task/*`);
+  console.log(`📡 Task routes available at: http://${EXPRESS_HOST}:${EXPRESS_PORT}/auth/*`);
 });

@@ -3,10 +3,6 @@ export interface UserModal {
   email: string;
   name: string;
   role: "USER" | "ADMIN" | "SUPERADMIN";
-  department?: {
-    id: number;
-    name: string;
-  };
 }
 
 
