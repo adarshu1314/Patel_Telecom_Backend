@@ -7,6 +7,7 @@ import encryptRoutes from "./routes/encrypt";
 import { validateToken } from "./middleware/auth";
 import productBulkRoutes from "./routes/productbulk";
 import cartRoutes from "./routes/cart";
+import quotationRoutes from "./routes/quotation";
 // Load environment variables
 dotenv?.config();
 
@@ -45,8 +46,9 @@ console.log('🚀 Backend initialization started - console logging test');
 // Auth routes
 app.use("/api/auth", authRoutes);
 app.use("/api/encrypt", encryptRoutes);
-app.use("/api/productbulk",validateToken, productBulkRoutes);
-app.use("/api/cart",validateToken, cartRoutes);
+app.use("/api/productbulk", validateToken, productBulkRoutes);
+app.use("/api/cart", validateToken, cartRoutes);
+app.use("/api/quotation", validateToken, quotationRoutes);
 
 
 // Basic health check route

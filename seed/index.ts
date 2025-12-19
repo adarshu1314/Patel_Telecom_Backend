@@ -1,119 +1,109 @@
-import { PrismaClient, Role, TaskStatus, AttendanceStatus } from '../prisma-client';
-import { departments, users, clients, tasks, attendance } from './data';
+import { PrismaClient } from '../prisma-client';
+import { admins, customers, products } from './data';
 
 const prisma = new PrismaClient();
 
 async function main() {
     console.log('🌱 Seeding database...');
 
-    // Clear existing data (optional - useful for development)
+    // 1. Clear existing data
+    // Delete in reverse order of dependencies to avoid foreign key constraint violations
     console.log('🧹 Clearing existing data...');
-    await prisma.attendance.deleteMany();
-    await prisma.task.deleteMany();
-    await prisma.user.deleteMany();
-    await prisma.client.deleteMany();
-    await prisma.department.deleteMany();
+    try {
+        await prisma.cartItem.deleteMany();
+        await prisma.inventory_inflow_outflow.deleteMany();
+        await prisma.payment.deleteMany();
+        await prisma.order_details.deleteMany();
+        await prisma.order.deleteMany();
+        await prisma.quotation_details.deleteMany();
+        await prisma.quotation.deleteMany();
+        await prisma.notification.deleteMany();
+        await prisma.credit.deleteMany();
 
-    // Seed Departments
-    console.log('🏢 Seeding departments...');
-    const createdDepartments = await Promise.all(
-        departments.map(dept =>
-            prisma.department.create({ data: dept })
-        )
-    );
+        // Main entities
+        await prisma.product.deleteMany();
+        await prisma.customer.deleteMany();
+        await prisma.admin.deleteMany();
+    } catch (error) {
+        console.warn('⚠️  Warning during cleanup (might be empty tables):', error);
+    }
 
-    // Seed Users
-    console.log('👥 Seeding users...');
-    const createdUsers = await Promise.all(
-        users.map(user =>
-            prisma.user.create({
-                data: {
-                    name: user.name,
-                    email: user.email,
-                    password: user.password,
-                    role: user.role as Role,
-                    ...(user.department && {
-                        department: {
-                            connect: {
-                                id: createdDepartments.find(d => d.name === user.department)?.id
-                            }
-                        }
-                    })
-                }
-            })
-        )
-    );
+    // 2. Seed Admins
+    console.log('🔒 Seeding Admins...');
+    for (const admin of admins) {
+        await prisma.admin.create({
+            data: admin
+        });
+    }
 
-    // Seed Clients
-    console.log('🏢 Seeding clients...');
-    const createdClients = await Promise.all(
-        clients.map(client =>
-            prisma.client.create({ data: client })
-        )
-    );
+    // 3. Seed Products
+    console.log('📱 Seeding Products...');
+    const createdProducts = [];
+    for (const product of products) {
+        const p = await prisma.product.create({
+            data: product
+        });
+        createdProducts.push(p);
+    }
 
-    // Seed Tasks
-    console.log('📋 Seeding tasks...');
-    await Promise.all(
-        tasks.map(task =>
-            prisma.task.create({
-                data: {
-                    title: task.title,
-                    description: task.description,
-                    status: task.status as TaskStatus,
-                    priority: task.priority,
-                    dueDate: task.dueDate,
-                    ...(task.assignedUser && {
-                        assignedUser: {
-                            connect: {
-                                id: createdUsers.find(u => u.email === task.assignedUser)?.id
-                            }
-                        }
-                    }),
-                    ...(task.client && {
-                        client: {
-                            connect: {
-                                id: createdClients.find(c => c.name === task.client)?.id
-                            }
-                        }
-                    })
-                }
-            })
-        )
-    );
+    // 4. Seed Customers
+    console.log('👥 Seeding Customers...');
+    const createdCustomers = [];
+    for (const customer of customers) {
+        const c = await prisma.customer.create({
+            data: customer
+        });
+        createdCustomers.push(c);
 
-    // Seed Attendance
-    console.log('📅 Seeding attendance...');
-    await Promise.all(
-        attendance.map(record =>
-            prisma.attendance.create({
-                data: {
-                    date: record.date,
-                    status: record.status as AttendanceStatus,
-                    location: record.location,
-                    remarks: record.remarks,
-                    user: {
-                        connect: {
-                            id: createdUsers.find(u => u.email === record.user)?.id
-                        }
-                    }
-                }
-            })
-        )
-    );
+        // Initialize credit record for customer (optional but good for consistency)
+        await prisma.credit.create({
+            data: {
+                customer_id: c.customer_id,
+                total_credit_limit: Math.floor(Number(c.credit_limit)),
+                available_credit_limit: Math.floor(Number(c.remaining_credit)),
+                credit_amount: 0,
+                status: 'receivable'
+            }
+        });
+    }
+
+    // 5. Seed Cart Items
+    console.log('🛒 Seeding Cart Items...');
+    // Add some random items to first customer's cart
+    if (createdCustomers.length > 0 && createdProducts.length > 0) {
+        const customer = createdCustomers[0];
+        const product1 = createdProducts[0];
+        const product2 = createdProducts[1];
+
+        await prisma.cartItem.create({
+            data: {
+                userId: customer.customer_id,
+                productId: product1.product_id,
+                quantity: 1
+            }
+        });
+
+        await prisma.cartItem.create({
+            data: {
+                userId: customer.customer_id,
+                productId: product2.product_id,
+                quantity: 2
+            }
+        });
+    }
 
     console.log('✅ Database seeded successfully!');
-    console.log(`📊 Seeded data summary:`);
-    console.log(`   - ${createdDepartments.length} departments`);
-    console.log(`   - ${createdUsers.length} users`);
-    console.log(`   - ${createdClients.length} clients`);
-    console.log(`   - ${tasks.length} tasks`);
-    console.log(`   - ${attendance.length} attendance records`);
+    console.log(`📊 Summary:`);
+    console.log(`   - ${admins.length} Admins`);
+    console.log(`   - ${products.length} Products`);
+    console.log(`   - ${customers.length} Customers`);
+    console.log(`   - 2 Cart Items`);
 }
 
 main()
     .catch((e) => {
         console.error('❌ Error seeding database:', e);
+        //  process.exit(1);
     })
     .finally(async () => {
         await prisma.$disconnect();

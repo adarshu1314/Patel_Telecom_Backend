@@ -1,57 +1,41 @@
-import { PrismaClient, TaskStatus } from '../prisma-client';
-import { tasks } from './data';
+import { PrismaClient } from '../prisma-client';
+import { products } from './data';
 
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('📋 Seeding tasks...');
+    console.log('📦 Seeding products...');
 
-    // Clear existing tasks
-    console.log('🧹 Clearing existing tasks...');
-    await prisma.task.deleteMany();
+    // Clear existing products
+    console.log('🧹 Clearing existing products...');
+    await prisma.product.deleteMany();
 
-    // Get all existing users and clients
-    const users = await prisma.user.findMany();
-    const clients = await prisma.client.findMany();
-
-    // Seed Tasks
-    console.log('📋 Seeding tasks...');
+    // Seed products
+    console.log('📦 Inserting product records...');
     await Promise.all(
-        tasks.map(task =>
-            prisma.task.create({
+        products.map(product =>
+            prisma.product.create({
                 data: {
-                    title: task.title,
-                    description: task.description,
-                    status: task.status as TaskStatus,
-                    priority: task.priority,
-                    dueDate: task.dueDate,
-                    ...(task.assignedUser && {
-                        assignedUser: {
-                            connect: {
-                                id: users.find(u => u.email === task.assignedUser)?.id
-                            }
-                        }
-                    }),
-                    ...(task.client && {
-                        client: {
-                            connect: {
-                                id: clients.find(c => c.name === task.client)?.id
-                            }
-                        }
-                    })
+                    name: product.name,
+                    min_stock_limit: product.min_stock_limit ?? 10,
+                    description: product.description,
+                    specifications: product.specifications,
+                    image_url: product.image_url,
+                    price: product.price,
+                    updated_at: new Date()
                 }
             })
         )
     );
 
-    console.log('✅ Tasks seeded successfully!');
-    console.log(`📊 Seeded ${tasks.length} tasks`);
+    console.log('✅ Products seeded successfully!');
+    console.log(`📊 Seeded ${products.length} products`);
 }
 
 main()
     .catch((e) => {
-        console.error('❌ Error seeding tasks:', e);
-
+        console.error('❌ Error seeding products:', e);
+        //process.exit(1);
     })
     .finally(async () => {
         await prisma.$disconnect();

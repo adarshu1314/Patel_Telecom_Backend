@@ -64,7 +64,7 @@ export const loginCustomer = async (req: Request, res: Response) => {
 
 export const loginAdmin = async (req: Request, res: Response) => {
   try {
-    console.log("Request :"+req.body);
+    console.log("Request :" + req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -85,7 +85,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
       },
     });
     console.log(admin);
-    console.log(password); 
+    console.log(password);
     if (!admin || !(await bcrypt.compare(password, admin.password))) {
       return res.status(401).json({
         success: false,
@@ -127,18 +127,18 @@ export const loginAdmin = async (req: Request, res: Response) => {
 };
 
 export const getProfile = async (req: Request, res: Response) => {
-    try {
-        // This will be protected by middleware in the future
-        // For now, it's public
-        res.json({
-            success: true,
-            message: 'Profile endpoint - will be protected by middleware'
-        });
-    } catch (error) {
-        console.error('Profile error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Internal server error'
-        });
-    }
+  try {
+    // This will be protected by middleware in the future
+    // For now, it's public
+    res.json({
+      success: true,
+      message: 'Profile endpoint - will be protected by middleware'
+    });
+  } catch (error) {
+    console.error('Profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
 }

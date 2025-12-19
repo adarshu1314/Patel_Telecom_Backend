@@ -1,325 +1,96 @@
 
-export const departments = [
+export const admins = [
     {
-        name: 'Engineering',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        username: 'superadmin',
+        password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        email: 'admin@patel.com',
+        roles: ['SUPERADMIN', 'ADMIN'],
     },
     {
-        name: 'Marketing',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        name: 'Sales',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        name: 'Human Resources',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        name: 'Finance',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
+        username: 'manager',
+        password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        email: 'manager@patel.com',
+        roles: ['MANAGER'],
+    }
 ];
 
-export const users = [
+export const customers = [
     {
-        name: 'John Doe',
-        email: 'john.doe@company.com',
+        username: 'rahul_patel',
         password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        role: 'SUPERADMIN',
-        department: 'Engineering',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        email: 'rahul@example.com',
+        mobile_number: '9876543210',
+        credit_limit: 50000.00,
+        remaining_credit: 45000.00,
     },
     {
-        name: 'Jane Smith',
-        email: 'jane.smith@company.com',
+        username: 'priya_sharma',
         password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        role: 'ADMIN',
-        department: 'Marketing',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        email: 'priya@example.com',
+        mobile_number: '9876543211',
+        credit_limit: 20000.00,
+        remaining_credit: 20000.00,
     },
     {
-        name: 'Mike Johnson',
-        email: 'mike.johnson@company.com',
+        username: 'amit_kumar',
         password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        role: 'USER',
-        department: 'Sales',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        name: 'Sarah Wilson',
-        email: 'sarah.wilson@company.com',
-        password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        role: 'USER',
-        department: 'Human Resources',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        name: 'David Brown',
-        email: 'david.brown@company.com',
-        password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        role: 'USER',
-        department: 'Finance',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        name: 'Emily Davis',
-        email: 'emily.davis@company.com',
-        password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        role: 'USER',
-        department: 'Engineering',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
+        email: 'amit@example.com',
+        mobile_number: '9876543212',
+        credit_limit: 10000.00,
+        remaining_credit: 5000.00,
+    }
 ];
 
-export const clients = [
+export const products = [
     {
-        name: 'Acme Corporation',
-        phone: '+1-555-0123',
-        email: 'contact@acme.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        name: 'iPhone 15 Pro',
+        description: 'Latest Apple iPhone with Titanium finish',
+        price: 134900.00,
+        min_stock_limit: 5,
+        specifications: '256GB, Natural Titanium',
+        image_url: [
+            'https://example.com/iphone15pro_1.jpg',
+            'https://example.com/iphone15pro_2.jpg'
+        ]
     },
     {
-        name: 'Tech Solutions Inc',
-        phone: '+1-555-0456',
-        email: 'info@techsolutions.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        name: 'Samsung Galaxy S24 Ultra',
+        description: 'AI powered smartphone with S-Pen',
+        price: 129999.00,
+        min_stock_limit: 5,
+        specifications: '512GB, Titanium Grey',
+        image_url: [
+            'https://example.com/s24ultra_1.jpg'
+        ]
     },
     {
-        name: 'Global Industries',
-        phone: '+1-555-0789',
-        email: 'hello@globalindustries.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        name: 'OnePlus 12',
+        description: 'Smooth beyond beliefs',
+        price: 64999.00,
+        min_stock_limit: 10,
+        specifications: '16GB RAM, 512GB Storage, Flowy Emerald',
+        image_url: [
+            'https://example.com/op12.jpg'
+        ]
     },
     {
-        name: 'StartUp Ventures',
-        phone: '+1-555-0321',
-        email: 'founders@startupventures.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        name: 'AirPods Pro (2nd Gen)',
+        description: 'Active Noise Cancellation with USB-C',
+        price: 24900.00,
+        min_stock_limit: 20,
+        specifications: 'USB-C Charging Case',
+        image_url: [
+            'https://example.com/airpods.jpg'
+        ]
     },
     {
-        name: 'Enterprise Systems',
-        phone: '+1-555-0654',
-        email: 'support@enterprisesystems.com',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-];
-
-export const tasks = [
-    {
-        title: 'Setup Development Environment',
-        description: 'Configure development environment for new team members',
-        status: 'ASSIGNED',
-        assignedUser: 'john.doe@company.com',
-        client: 'Acme Corporation',
-        priority: 'High',
-        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        title: 'Create Marketing Campaign',
-        description: 'Design and implement Q4 marketing campaign',
-        status: 'IN_PROGRESS',
-        assignedUser: 'jane.smith@company.com',
-        client: 'Tech Solutions Inc',
-        priority: 'Medium',
-        dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
-        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        updatedAt: new Date(),
-    },
-    {
-        title: 'Client Onboarding Process',
-        description: 'Streamline client onboarding workflow',
-        status: 'COMPLETED',
-        assignedUser: 'mike.johnson@company.com',
-        client: 'Global Industries',
-        priority: 'Low',
-        dueDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
-        updatedAt: new Date(),
-    },
-    {
-        title: 'HR Policy Update',
-        description: 'Update employee handbook and policies',
-        status: 'ASSIGNED',
-        assignedUser: 'sarah.wilson@company.com',
-        client: null,
-        priority: 'Medium',
-        dueDate: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), // 21 days from now
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        title: 'Financial Report Q3',
-        description: 'Prepare quarterly financial analysis report',
-        status: 'IN_PROGRESS',
-        assignedUser: 'david.brown@company.com',
-        client: 'Enterprise Systems',
-        priority: 'High',
-        dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
-        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-        updatedAt: new Date(),
-    },
-    {
-        title: 'API Integration',
-        description: 'Integrate third-party payment API',
-        status: 'ASSIGNED',
-        assignedUser: 'emily.davis@company.com',
-        client: 'StartUp Ventures',
-        priority: 'High',
-        dueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days from now
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        title: 'Website Redesign',
-        description: 'Complete company website redesign project',
-        status: 'IN_PROGRESS',
-        assignedUser: 'john.doe@company.com',
-        client: 'Acme Corporation',
-        priority: 'Medium',
-        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        updatedAt: new Date(),
-    },
-    {
-        title: 'Sales Training Program',
-        description: 'Develop and conduct sales team training',
-        status: 'ASSIGNED',
-        assignedUser: 'mike.johnson@company.com',
-        client: null,
-        priority: 'Low',
-        dueDate: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000), // 25 days from now
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-];
-
-export const attendance = [
-    {
-        user: 'john.doe@company.com',
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // Yesterday
-        status: 'APPROVED',
-        location: 'Office Building A',
-        remarks: 'Regular work day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'jane.smith@company.com',
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // Yesterday
-        status: 'SUBMITTED',
-        location: 'Office Building B',
-        remarks: 'Client meeting in the morning',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'mike.johnson@company.com',
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // Yesterday
-        status: 'SUBMITTED',
-        location: 'Office Building A',
-        remarks: 'Traffic delay',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'sarah.wilson@company.com',
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // Yesterday
-        status: 'REJECTED',
-        location: 'Home Office',
-        remarks: 'Remote work day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'david.brown@company.com',
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // Yesterday
-        status: 'APPROVED',
-        location: null,
-        remarks: 'Personal day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'emily.davis@company.com',
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // Yesterday
-        status: 'SUBMITTED',
-        location: 'Office Building A',
-        remarks: 'Regular work day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'john.doe@company.com',
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        status: 'APPROVED',
-        location: 'Office Building A',
-        remarks: 'Regular work day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'jane.smith@company.com',
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        status: 'REJECTED',
-        location: null,
-        remarks: 'Sick day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'mike.johnson@company.com',
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        status: 'APPROVED',
-        location: 'Client Site - Tech Solutions',
-        remarks: 'On-site client meeting',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'sarah.wilson@company.com',
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        status: 'SUBMITTED',
-        location: 'Office Building B',
-        remarks: 'Regular work day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'david.brown@company.com',
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        status: 'APPROVED',
-        location: 'Office Building A',
-        remarks: 'Regular work day',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        user: 'emily.davis@company.com',
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        status: 'SUBMITTED',
-        location: 'Office Building A',
-        remarks: 'Late due to doctor appointment',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
+        name: 'Sony WH-1000XM5',
+        description: 'Wireless Noise Cancelling Headphones',
+        price: 29990.00,
+        min_stock_limit: 8,
+        specifications: 'Silver, 30hr Battery',
+        image_url: [
+            'https://example.com/sonyxm5.jpg'
+        ]
+    }
 ];
