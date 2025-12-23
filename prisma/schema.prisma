@@ -5,7 +5,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Correct provider
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -110,6 +110,8 @@ model product {
   price                    Decimal                    @db.Decimal(10, 2)
   created_at               DateTime?                  @default(now()) @db.Timestamp(6)
   updated_at               DateTime?                  @db.Timestamp(6)
+  category                 String?
+  brand                    String?
   cartItem                 cartItem[]
   inventory_inflow_outflow inventory_inflow_outflow[]
   order_details            order_details[]

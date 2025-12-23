@@ -51,7 +51,9 @@ export const products = [
         image_url: [
             'https://example.com/iphone15pro_1.jpg',
             'https://example.com/iphone15pro_2.jpg'
-        ]
+        ],
+        category: 'Smartphone',
+        brand: 'Apple'
     },
     {
         name: 'Samsung Galaxy S24 Ultra',
@@ -61,7 +63,9 @@ export const products = [
         specifications: '512GB, Titanium Grey',
         image_url: [
             'https://example.com/s24ultra_1.jpg'
-        ]
+        ],
+        category: 'Smartphone',
+        brand: 'Samsung'
     },
     {
         name: 'OnePlus 12',
@@ -71,7 +75,9 @@ export const products = [
         specifications: '16GB RAM, 512GB Storage, Flowy Emerald',
         image_url: [
             'https://example.com/op12.jpg'
-        ]
+        ],
+        category: 'Smartphone',
+        brand: 'OnePlus'
     },
     {
         name: 'AirPods Pro (2nd Gen)',
@@ -81,7 +87,9 @@ export const products = [
         specifications: 'USB-C Charging Case',
         image_url: [
             'https://example.com/airpods.jpg'
-        ]
+        ],
+        category: 'Headphones',
+        brand: 'Apple'
     },
     {
         name: 'Sony WH-1000XM5',
@@ -91,6 +99,8 @@ export const products = [
         specifications: 'Silver, 30hr Battery',
         image_url: [
             'https://example.com/sonyxm5.jpg'
-        ]
+        ],
+        category: 'Headphones',
+        brand: 'Sony'
     }
 ];

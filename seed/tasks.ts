@@ -7,6 +7,8 @@ async function main() {
     console.log('📦 Seeding products...');
 
     // Clear existing products
+    console.log('🧹 Clearing existing quotation_details...');
+    await prisma.quotation_details.deleteMany();
     console.log('🧹 Clearing existing products...');
     await prisma.product.deleteMany();
 
@@ -22,7 +24,9 @@ async function main() {
                     specifications: product.specifications,
                     image_url: product.image_url,
                     price: product.price,
-                    updated_at: new Date()
+                    updated_at: new Date(),
+                    category: product.category,
+                    brand: product.brand
                 }
             })
         )
