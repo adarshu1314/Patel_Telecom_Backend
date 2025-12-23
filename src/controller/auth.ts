@@ -24,6 +24,9 @@ export const loginCustomer = async (req: Request, res: Response) => {
         password: true,
       },
     });
+    console.log(customer);
+    console.log(customer?.password);
+    console.log(password);
 
     if (!customer || !(await bcrypt.compare(password, customer.password))) {
       return res.status(401).json({

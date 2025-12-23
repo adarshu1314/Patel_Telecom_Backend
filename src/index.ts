@@ -9,6 +9,8 @@ import productBulkRoutes from "./routes/productbulk";
 import cartRoutes from "./routes/cart";
 import quotationRoutes from "./routes/quotation";
 import orderRoutes from "./routes/Order";
+import { adminOnly } from "./middleware/adminOnly";
+
 // Load environment variables
 dotenv?.config();
 
@@ -49,7 +51,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/encrypt", encryptRoutes);
 app.use("/api/productbulk", validateToken, productBulkRoutes);
 app.use("/api/cart", validateToken, cartRoutes);
-app.use("/api/quotation", validateToken, quotationRoutes);
+app.use("/api/quotation", validateToken, adminOnly, quotationRoutes);
 // app.use("/api/order", validateToken, orderRoutes);
 app.use("/api/order", orderRoutes);
 

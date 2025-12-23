@@ -76,3 +76,143 @@ export const CreateQuotation = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const GetQuotation = async (req: Request, res: Response) => {
+
+    try {
+
+        const userId = req.user?.userId;
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        const quotation = await prisma.quotation.findMany({
+            where: {
+                customer_id: userId
+            },
+            include: {
+                quotation_details: true
+            }
+        })
+
+        return res.status(200).json({
+            message: "Quotation fetched successfully",
+            quotation
+        })
+
+    } catch (error) {
+        console.error("Error fetching quotation:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export const GetQuotationAdmin = async (req: Request, res: Response) => {
+
+    try {
+        const customer_id = Number(req.headers.customer_id);
+        console.log("customer_id :", customer_id);
+        let quotation: any;
+        if (customer_id) {
+            quotation = await GetCustomerQuotationById(customer_id)
+        }
+        else {
+            quotation = await GetAllQuotation();
+        }
+        console.log("quotation :", quotation);
+        if (!quotation) {
+            return res.status(404).json({ message: "Quotation not found" });
+        }
+        else {
+            return res.status(200).json({
+                message: "Quotation fetched successfully",
+                quotation
+            })
+        }
+
+    } catch (error) {
+        console.error("Error fetching quotation:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+async function GetAllQuotation() {
+
+    try {
+        const quotation = await prisma.quotation.findMany({
+            select: {
+                quotation_id: true,
+                customer_id: true,
+                admin_id: true,
+                status: true,
+                total_amount: true,
+                credit_period: true,
+                payment_mode: true,
+                created_at: true,
+                updated_at: true,
+                quotation_details: {
+                    select: {
+                        product_id: true,
+                        quantity: true,
+                        price: true,
+                        quotation_id: true,
+                        product: {
+                            select: {
+                                product_id: true,
+                                name: true,
+                                price: true,
+                                image_url: true,
+                                description: true,
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        return quotation;
+
+    } catch (error) {
+        console.error("Error fetching quotation:", error);
+        return error
+    }
+}
+
+async function GetCustomerQuotationById(customerid: any) {
+    try {
+        const quotation = await prisma.quotation.findMany({
+            where: {
+                customer_id: customerid,
+            },
+            select: {
+                quotation_id: true,
+                customer_id: true,
+                admin_id: true,
+                status: true,
+                total_amount: true,
+                credit_period: true,
+                payment_mode: true,
+                created_at: true,
+                updated_at: true,
+                quotation_details: {
+                    select: {
+                        product_id: true,
+                        quantity: true,
+                        price: true,
+                        quotation_id: true,
+                        product: {
+                            select: {
+                                product_id: true,
+                                name: true,
+                                price: true,
+                                image_url: true,
+                                description: true,
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        return quotation;
+    } catch (error) {
+        console.error("Error fetching quotation:", error);
+        return error;
+    }
+}
