@@ -4,9 +4,35 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 
+export const Login = async (req: Request, res: Response) => {
+  try {
+    const { email, password, role } = req.body;
+
+    if (!email || !password || !role) {
+      return res.status(400).json({
+        success: false,
+        message: "Email, password, and role are required",
+      });
+    }
+
+    if (role === 'admin' || role === 'ADMIN') {
+      return loginAdmin(req, res);
+    } else {
+      return loginCustomer(req, res);
+    }
+  } catch (error) {
+    console.error("Login delegation error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 export const loginCustomer = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    // ... rest of existing logic ...
 
     if (!email || !password) {
       return res.status(400).json({

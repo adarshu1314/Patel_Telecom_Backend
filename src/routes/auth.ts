@@ -1,13 +1,13 @@
 import express, { Request, Response } from 'express';
 
 import { validateToken } from '../middleware/auth';
-import { getProfile, loginCustomer,loginAdmin } from '../controller/auth';
+import { getProfile, loginCustomer, loginAdmin, Login } from '../controller/auth';
 
 const router = express.Router();
 
 
 // Login route
-router.post('/login', loginCustomer);
+router.post('/login', Login);
 router.post('/loginAdmin', loginAdmin);
 
 // Get current user profile (protected route example)

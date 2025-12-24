@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth";
 import encryptRoutes from "./routes/encrypt";
 import { validateToken } from "./middleware/auth";
 import productBulkRoutes from "./routes/productbulk";
+import productRoutes from "./routes/product";
 import cartRoutes from "./routes/cart";
 import quotationRoutes from "./routes/quotation";
 import orderRoutes from "./routes/Order";
@@ -16,7 +17,7 @@ dotenv?.config();
 
 const app = express();
 const EXPRESS_PORT: number = process.env.EXPRESS_PORT ? Number(process.env.EXPRESS_PORT) : 8080;
-const EXPRESS_HOST = process.env.EXPRESS_HOST || "localhost";
+const EXPRESS_HOST = process.env.EXPRESS_HOST || "127.0.0.1";
 
 // Middleware
 app.use(express.json());
@@ -50,8 +51,9 @@ console.log('🚀 Backend initialization started - console logging test');
 app.use("/api/auth", authRoutes);
 app.use("/api/encrypt", encryptRoutes);
 app.use("/api/productbulk", validateToken, productBulkRoutes);
+app.use("/api/products", productRoutes);
 app.use("/api/cart", validateToken, cartRoutes);
-app.use("/api/quotation", validateToken, adminOnly, quotationRoutes);
+app.use("/api/quotation", validateToken, quotationRoutes);
 // app.use("/api/order", validateToken, orderRoutes);
 app.use("/api/order", orderRoutes);
 
